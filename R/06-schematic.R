@@ -49,7 +49,7 @@ p_regions <- function(mig = MIG, pop = POP, r0 = R0, seed_region = SEED_REGION) 
     scale_alpha(range = c(0.42, 1), guide = "none") +
     scale_colour_gradient(low = "#AEBECE", high = "#1F3B5B",
                           breaks = c(0.002, 0.02, 0.05),
-                          labels = c("0.002\nvery low", "0.02\nmedium", "0.05\nvery high"),
+                          labels = c("0.002", "0.02", "0.05"),
                           name = "migration rate (per lineage per week)",
                           guide = guide_colourbar(title.position = "top", title.hjust = .5,
                                                   barwidth = unit(11, "lines"),
@@ -71,7 +71,8 @@ p_regions <- function(mig = MIG, pop = POP, r0 = R0, seed_region = SEED_REGION) 
     geom_text(data = filter(nodes, seed), aes(x, y + rad + 0.135, label = "index case"),
               size = 3, colour = "#C44E52", fontface = "italic") +
     coord_fixed(clip = "off") +
-    labs(title = "Four regions, asymmetric migration") +
+    labs(title = "Four regions, gravity migration",
+         subtitle = expression(m[ij] == c %.% P[j]^beta / d[ij]^gamma)) +
     theme_void(base_size = 11) +
     theme(plot.title = element_text(face = "bold", hjust = 0, size = 12),
           legend.position = "bottom",

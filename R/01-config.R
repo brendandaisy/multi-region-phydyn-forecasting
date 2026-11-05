@@ -37,22 +37,49 @@ R0 <- c(A = 1.3, B = 1.5, C = 1.2, D = 1.6)
 ## beta_i = R0_i * delta / N_i  (frequency-dependent transmission).
 BETA <- R0 * DELTA / POP
 
-## ---- migration ------------------------------------------------------
-## Per-lineage rate per week, row = origin, col = destination.
-## Taken as given ("migration data is available") rather than from gravity.
+## ---- migration: three-parameter gravity model ----------------------
+## Per-lineage rate per week from region i to region j:
+##
+##     m_ij = c * P_j^beta / d_ij^gamma
+##
+## P_j (destination population) and d_ij (distance) are DATA. Note there is
+## no P_i term: ReMASTER's propensity for I[i] -> I[j] is already m_ij * I[i],
+## so the origin's size enters through the lineage count, not the rate.
+##
+## Asymmetry is therefore controlled by the single scalar beta:
+##     m_ij / m_ji = (P_j / P_i)^beta
+##
+## Distances between the four (fictitious) regions, km. Chosen so the model
+## approximates the qualitative rates this project started from; see
+## MIG_TARGET below and SIMULATION.md for how well it does.
+DIST <- matrix(c(  0,  40, 116,  95,
+                  40,   0, 207, 107,
+                 116, 207,   0, 148,
+                  95, 107, 148,   0),
+               NREG, NREG, byrow = TRUE, dimnames = list(REGIONS, REGIONS))
+
+GRAVITY <- list(c = 0.088, beta = 0.508, gamma = 1.5)
+
+make_migration_gravity <- function(pop, dist, c, beta, gamma) {
+  m <- c * outer(rep(1, length(pop)), pop^beta) / dist^gamma
+  diag(m) <- 0
+  dimnames(m) <- list(names(pop), names(pop))
+  m
+}
+
+MIG <- make_migration_gravity(POP, DIST, GRAVITY$c, GRAVITY$beta, GRAVITY$gamma)
+
+## The qualitative matrix this project used before gravity, kept for
+## comparison only. It is NOT internally consistent with a single beta:
+## the A-D pair implies beta = 1.21 while B-C implies beta = 0, so no
+## three-parameter gravity model can reproduce all of it at once.
 LEVELS <- c(none = 0, very_low = 0.002, low = 0.008,
             medium = 0.02, high = 0.04, very_high = 0.05)
-
-MIG_LEVEL <- rbind(
-  A = c(A = NA,          B = "very_high", C = "very_low", D = "very_low"),
-  B = c(A = "high",      B = NA,          C = "very_low", D = "very_low"),
-  C = c(A = "low",       B = "very_low",  C = NA,         D = "very_low"),
-  D = c(A = "medium",    B = "medium",    C = "none",     D = NA)
-)
-
-MIG <- matrix(0, NREG, NREG, dimnames = list(REGIONS, REGIONS))
-for (i in REGIONS) for (j in REGIONS)
-  if (i != j) MIG[i, j] <- LEVELS[[ MIG_LEVEL[i, j] ]]
+MIG_TARGET <- matrix(c(    0, 0.050, 0.002, 0.002,
+                       0.040,     0, 0.002, 0.002,
+                       0.008, 0.002,     0, 0.002,
+                       0.020, 0.020,     0,     0),
+                     NREG, NREG, byrow = TRUE, dimnames = list(REGIONS, REGIONS))
 
 ## ---- observation model ----------------------------------------------
 ## Case reporting delay: gamma, mean 3 weeks.

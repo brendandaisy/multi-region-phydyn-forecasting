@@ -33,17 +33,18 @@
       </plate>
 
       <!-- migration -->
-      <reaction spec="Reaction" rate="0.05"> I[0] -> I[1] </reaction>   <!-- A -> B -->
-      <reaction spec="Reaction" rate="0.002"> I[0] -> I[2] </reaction>   <!-- A -> C -->
-      <reaction spec="Reaction" rate="0.002"> I[0] -> I[3] </reaction>   <!-- A -> D -->
-      <reaction spec="Reaction" rate="0.04"> I[1] -> I[0] </reaction>   <!-- B -> A -->
-      <reaction spec="Reaction" rate="0.002"> I[1] -> I[2] </reaction>   <!-- B -> C -->
-      <reaction spec="Reaction" rate="0.002"> I[1] -> I[3] </reaction>   <!-- B -> D -->
-      <reaction spec="Reaction" rate="0.008"> I[2] -> I[0] </reaction>   <!-- C -> A -->
-      <reaction spec="Reaction" rate="0.002"> I[2] -> I[1] </reaction>   <!-- C -> B -->
-      <reaction spec="Reaction" rate="0.002"> I[2] -> I[3] </reaction>   <!-- C -> D -->
-      <reaction spec="Reaction" rate="0.02"> I[3] -> I[0] </reaction>   <!-- D -> A -->
-      <reaction spec="Reaction" rate="0.02"> I[3] -> I[1] </reaction>   <!-- D -> B -->
+      <reaction spec="Reaction" rate="0.05324954766"> I[0] -> I[1] </reaction>   <!-- A -> B -->
+      <reaction spec="Reaction" rate="0.002101674243"> I[0] -> I[2] </reaction>   <!-- A -> C -->
+      <reaction spec="Reaction" rate="0.003902578286"> I[0] -> I[3] </reaction>   <!-- A -> D -->
+      <reaction spec="Reaction" rate="0.03744490087"> I[1] -> I[0] </reaction>   <!-- B -> A -->
+      <reaction spec="Reaction" rate="0.0008816513307"> I[1] -> I[2] </reaction>   <!-- B -> C -->
+      <reaction spec="Reaction" rate="0.00326483596"> I[1] -> I[3] </reaction>   <!-- B -> D -->
+      <reaction spec="Reaction" rate="0.007582207899"> I[2] -> I[0] </reaction>   <!-- C -> A -->
+      <reaction spec="Reaction" rate="0.004523247916"> I[2] -> I[1] </reaction>   <!-- C -> B -->
+      <reaction spec="Reaction" rate="0.002006986534"> I[2] -> I[3] </reaction>   <!-- C -> D -->
+      <reaction spec="Reaction" rate="0.01023050953"> I[3] -> I[0] </reaction>   <!-- D -> A -->
+      <reaction spec="Reaction" rate="0.01217111157"> I[3] -> I[1] </reaction>   <!-- D -> B -->
+      <reaction spec="Reaction" rate="0.00145834344"> I[3] -> I[2] </reaction>   <!-- D -> C -->
 
     </trajectory>
   </simulate>

@@ -27,10 +27,10 @@ package installed.
 
 ## Status
 
-Simulation suite works end to end (~5s per replicate). Not yet built: the
-gravity / mobility parameterization of the migration matrix, the parameter
-sweep, and the neural inference itself. Migration is currently a fixed matrix
-with no free parameters.
+Simulation suite works end to end (~5s per replicate), with migration under a
+three-parameter gravity model (`c`, `beta`, `gamma`) over population sizes and
+distances supplied as data. Not yet built: the parameter sweep, the ML
+tree-estimation step, and the neural inference itself.
 
 `figures/` and `output/` are committed for convenience and are fully
 regenerable; BEAST run artefacts are gitignored and land in a local scratch

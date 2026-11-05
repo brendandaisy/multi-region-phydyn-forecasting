@@ -43,10 +43,46 @@ the two data streams mutually informative.
 `R0 = (A 1.3, B 1.5, C 1.2, D 1.6)`, `N = (A 10000, B 20000, C 800, D 1500)`,
 outbreak seeded with one infection in **D**.
 
-Migration is taken as given rather than from a gravity model. Note that D seeds
-A and B, which then dominate via high A<->B exchange, while C is reachable only
-by `very_low` flow from A and B — so C's outbreak peaks at week 32, *after* the
-as-of date.
+### Migration: three-parameter gravity model
+
+```
+m_ij = c * P_j^beta / d_ij^gamma        theta_mig = (c, beta, gamma)
+```
+
+with `c = 0.088`, `beta = 0.508`, `gamma = 1.5`. Destination population `P_j`
+and distance `d_ij` are **data**, fixed outside the simulation loop, so the
+parameter count does not grow with the number of regions.
+
+There is deliberately no `P_i` term: ReMASTER's propensity for `I[i] -> I[j]`
+is already `m_ij * I[i]`, so putting origin population in the rate would count
+it twice. Asymmetry therefore comes from the single scalar `beta`:
+
+```
+m_ij / m_ji = (P_j / P_i)^beta
+```
+
+Distances (km, fictitious) were solved so that the model approximates the
+qualitative matrix the project started from (`MIG_TARGET` in the config):
+
+|        | A | B | C | D |
+|---|---|---|---|---|
+| **A** | 0 | 40 | 116 | 95 |
+| **B** | 40 | 0 | 207 | 107 |
+| **C** | 116 | 207 | 0 | 148 |
+| **D** | 95 | 107 | 148 | 0 |
+
+**Two things gravity cannot reproduce**, both inherent rather than fixable by
+tuning:
+
+1. *No single beta fits every pair.* The A-D asymmetry implies `beta = 1.21`,
+   A-B implies `0.32`, and B-C implies `0.00`. The fitted `0.508` is a
+   least-squares compromise, so D's total outflow lands at 0.024 per lineage
+   per week against a target of 0.040.
+2. *No structural zeros.* `d_ij` is finite for every pair, so every rate is
+   strictly positive. The old matrix had `D -> C = 0`; gravity gives 0.0015,
+   which seeds C directly from the index region and moves C's peak from week 32
+   to week 18. If a hard zero matters, multiply the gravity matrix by a fixed
+   adjacency mask -- still three parameters, with the mask as data.
 
 ## Observation model (all in R, none of it in ReMASTER)
 

@@ -1,0 +1,19 @@
+# RStudio
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+
+# BEAST2 / ReMASTER run outputs (regenerable; some are large)
+*.traj
+*.trees
+*.log
+*.xml.state
+*.out
+
+# R binary artefacts
+*.Rds
+
+# superseded scratch from early ReMASTER exploration
+mtbd-3region-sim.xml
+sim.xml
